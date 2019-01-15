@@ -41,12 +41,15 @@ public class Connection {
 			
 			Map<String,Integer> mapTweetsDia = new HashMap<>();
 			Map<String,Integer> mapRetweetsDia = new HashMap<>();
+			Map<String,Integer> mapFavoritesDia = new HashMap<>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			
 			Integer countTweetsDay = null;
 			Integer countRetweetsDay = null;
+			Integer countFavoritesDay = null;
 			int countTweets = 0;
 			int countRetweets = 0;
+			int countFavorites = 0;
 			QueryResult result = twitter.search(q);
 			while (result.hasNext()) {
 				q = result.nextQuery();
@@ -76,7 +79,23 @@ public class Connection {
 					
 					mapRetweetsDia.put(DateToStr, countRetweetsDay);
 					
-					countRetweets += status.getRetweetCount();					
+					countRetweets += status.getRetweetCount();	
+					
+					
+					
+					
+					// Conta os Favorites
+					countFavoritesDay = mapFavoritesDia.get(DateToStr);
+					if( countFavoritesDay != null) {
+						countFavoritesDay += status.getFavoriteCount();
+					} else {
+						countFavoritesDay = status.getFavoriteCount();
+					}
+					
+					mapFavoritesDia.put(DateToStr, countFavoritesDay);
+					
+					countFavorites += status.getFavoriteCount();
+					
 
 					/*System.out.println( status.getCreatedAt() + " @" + status.getUser().getScreenName() + ":"
 							+ status.getText());*/
@@ -94,6 +113,12 @@ public class Connection {
 
 			for(Map.Entry<String, Integer> s : mapRetweetsDia.entrySet() ) {
 				 System.out.println("Dia: " + s.getKey() + " retweets: " + s.getValue() ); 
+			}
+			
+			System.out.println("Quantidade de favorites da ultima semana: " + countFavorites);
+
+			for(Map.Entry<String, Integer> s : mapFavoritesDia.entrySet() ) {
+				 System.out.println("Dia: " + s.getKey() + " favorites: " + s.getValue() ); 
 			}
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
