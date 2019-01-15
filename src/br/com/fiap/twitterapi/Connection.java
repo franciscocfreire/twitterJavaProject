@@ -40,9 +40,11 @@ public class Connection {
 
 			
 			Map<String,Integer> mapTweetsDia = new HashMap<>();
+			Map<String,Integer> mapRetweetsDia = new HashMap<>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			
 			Integer countTweetsDay = null;
+			Integer countRetweetsDay = null;
 			int countTweets = 0;
 			int countRetweets = 0;
 			QueryResult result = twitter.search(q);
@@ -51,6 +53,8 @@ public class Connection {
 				for (Status status : result.getTweets()) {
 					
 					String DateToStr = format.format(status.getCreatedAt());
+					
+					// Conta os Tweets
 					countTweetsDay = mapTweetsDia.get(DateToStr);
 					if( countTweetsDay != null) {
 						countTweetsDay += 1;
@@ -61,13 +65,19 @@ public class Connection {
 					mapTweetsDia.put(DateToStr, countTweetsDay);
 					
 					countTweets++;
-					countRetweets += status.getRetweetCount();
-
+				
+					// Conta os Retweets
+					countRetweetsDay = mapRetweetsDia.get(DateToStr);
+					if( countRetweetsDay != null) {
+						countRetweetsDay += status.getRetweetCount();
+					} else {
+						countRetweetsDay = status.getRetweetCount();
+					}
 					
-
-					//System.out.println(DateToStr);
-
+					mapRetweetsDia.put(DateToStr, countRetweetsDay);
 					
+					countRetweets += status.getRetweetCount();					
+
 					/*System.out.println( status.getCreatedAt() + " @" + status.getUser().getScreenName() + ":"
 							+ status.getText());*/
 				}
@@ -75,11 +85,16 @@ public class Connection {
 			}
 			
 			System.out.println("Quantidade de tweets da ultima semana: " + countTweets);
-			System.out.println("Quantidade de retweets da ultima semana: " + countRetweets);
+			
 			for(Map.Entry<String, Integer> s : mapTweetsDia.entrySet() ) {
 				 System.out.println("Dia: " + s.getKey() + " tweets: " + s.getValue() ); 
 			}
+			
+			System.out.println("Quantidade de retweets da ultima semana: " + countRetweets);
 
+			for(Map.Entry<String, Integer> s : mapRetweetsDia.entrySet() ) {
+				 System.out.println("Dia: " + s.getKey() + " retweets: " + s.getValue() ); 
+			}
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
