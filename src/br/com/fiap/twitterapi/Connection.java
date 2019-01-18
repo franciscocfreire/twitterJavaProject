@@ -4,7 +4,10 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import twitter4j.Query;
@@ -44,6 +47,7 @@ public class Connection {
 			Map<String,Integer> mapFavoritesDia = new HashMap<>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			
+			List<Tweet> listTweet = new ArrayList<>();
 			Integer countTweetsDay = null;
 			Integer countRetweetsDay = null;
 			Integer countFavoritesDay = null;
@@ -55,6 +59,9 @@ public class Connection {
 				q = result.nextQuery();
 				for (Status status : result.getTweets()) {
 					
+					Tweet tweet = new Tweet();
+					tweet.setData(status.getCreatedAt());
+					tweet.setNome(status.getUser().getName());
 					String DateToStr = format.format(status.getCreatedAt());
 					
 					// Conta os Tweets
@@ -99,8 +106,24 @@ public class Connection {
 
 					/*System.out.println( status.getCreatedAt() + " @" + status.getUser().getScreenName() + ":"
 							+ status.getText());*/
+					listTweet.add(tweet);
 				}
 				result = twitter.search(q);
+			}
+			
+			System.out.println("Ordenados por Nome: ");
+			Collections.sort(listTweet, Tweet.NomeComparator);
+
+			for(Tweet tweet : listTweet ) {
+				System.out.println(tweet);
+			}
+
+			
+			System.out.println("Ordenados por Data: ");
+			Collections.sort(listTweet, Tweet.DataComparator);
+			
+			for(Tweet tweet : listTweet ) {
+				System.out.println(tweet);
 			}
 			
 			System.out.println("Quantidade de tweets da ultima semana: " + countTweets);
