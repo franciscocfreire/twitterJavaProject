@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resource"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/twitter4J"/>
-	<classpathentry kind="lib" path="K:/Fiap/java/okhttp-3.0.0-RC1.jar"/>
-	<classpathentry kind="lib" path="K:/Fiap/java/okio-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/okhttp-3.0.0-RC1.jar"/>
+	<classpathentry kind="lib" path="lib/okio-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-async-4.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-core-4.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-examples-4.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-stream-4.0.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
